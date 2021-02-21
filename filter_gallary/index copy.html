@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font: 18px/1.65 sans-serif;
+  text-align: center;
+}
+
+li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;    
+  display: block;
+  color: #333;
+}
+
+h2 {
+  color: #333;
+  padding: 10px 0;
+}
+
+.filter {
+  margin: 30px 0 10px;
+}
+
+.filter a {
+  display: inline-block;
+  padding: 10px;
+  border: 2px solid #333;
+  position: relative;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.boxes {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.boxes a {
+  width: 23%;
+  border: 2px solid #333;
+  margin: 0 1% 20px 1%;
+  line-height: 60px;
+}
+
+
+
+/* HELPER CLASSES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.all {
+  background: khaki;
+}
+
+.green {
+  background: lightgreen;
+}
+
+.blue {
+  background: lightblue;
+}
+
+.red {
+  background: lightcoral;
+}
+
+.filter a.active:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 15px 15px 0 0;
+  border-color: #333 transparent transparent transparent;
+}
+
+.is-animated {
+  animation: .6s rotate-right;
+}
+
+@keyframes rotate-right {
+  0% {
+    transform: translate(-100%) rotate(-100deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+    </style>
+</head>
+<body>
+  <header>
+    <h2>A filtering component with CSS and jQuery<br>(with rotate animation)</h2>
+  </header>
+  
+  <div class="cta filter">
+    <a class="all active" data-filter="all" href="#" role="button">Show All</a>
+    <a class="green" data-filter="green" href="#" role="button">Show Green Boxes</a>
+    <a class="blue" data-filter="blue" href="#" role="button">Show Blue Boxes</a>
+    <a class="red" data-filter="red" href="#" role="button">Show Red Boxes</a>
+  </div>
+  
+  <div class="boxes">
+    <a class="red" data-category="red" href="#">Box1</a>
+    <a class="green" data-category="green" href="#">Box2</a>
+    <a class="blue" data-category="blue" href="#">Box3</a>
+    <a class="green" data-category="green" href="#">Box4</a>
+    <a class="red" data-category="red" href="#">Box5</a>
+    <a class="green" data-category="green" href="#">Box6</a>
+    <a class="blue" data-category="blue" href="#">Box7</a>
+    <a class="red" data-category="red" href="#">Box8</a>
+    <a class="green" data-category="green" href="#">Box9</a>
+    <a class="blue" data-category="blue" href="#">Box10</a>
+    <a class="red" data-category="red" href="#">Box11</a>
+    <a class="green" data-category="green" href="#">Box12</a>
+    <a class="blue" data-category="blue" href="#">Box13</a>
+    <a class="green" data-category="green" href="#">Box14</a>
+    <a class="red" data-category="red" href="#">Box15</a>
+    <a class="blue" data-category="blue" href="#">Box16</a>
+  </div>
+      <script src="jquery-3.5.1.min.js"></script>
+      <script>
+        (function($) {
+
+'use strict';
+
+var $filters = $('.filter [data-filter]'),
+  $boxes = $('.boxes [data-category]');
+
+$filters.on('click', function(e) {
+  e.preventDefault();
+  var $this = $(this);
+  
+  $filters.removeClass('active');
+  $this.addClass('active');
+
+  var $filterColor = $this.attr('data-filter');
+
+  if ($filterColor == 'all') {
+    $boxes.removeClass('is-animated')
+      .fadeOut().promise().done(function() {
+        $boxes.addClass('is-animated').fadeIn();
+      });
+  } else {
+    $boxes.removeClass('is-animated')
+      .fadeOut().promise().done(function() {
+        $boxes.filter('[data-category = "' + $filterColor + '"]')
+          .addClass('is-animated').fadeIn();
+      });
+  }
+});
+
+})(jQuery);
+      </script>
+</body>
+</html>
